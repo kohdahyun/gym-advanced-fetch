@@ -1,6 +1,6 @@
 # Gym Advanced Fetch
 ## Fetch Env for Yonsei Univ. Research Paper
-author. Koh Dahyun(+[Kang Taejun](https://github.com/eslerkang))
+author. [Koh Dahyun](https://www.github.com/kohdahyun)(+[Kang Taejun](https://github.com/eslerkang))
 
 ## How To Use
 1. git clone https://github.com/kohdahyun/gym-advanced-fetch.git
