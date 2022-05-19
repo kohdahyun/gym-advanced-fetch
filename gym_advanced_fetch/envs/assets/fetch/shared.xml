@@ -14,7 +14,8 @@
         <material name="robot0:head_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
         <material name="robot0:torso_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
         <material name="robot0:base_mat" shininess="0.03" specular="0.4" reflectance="0"></material>
-        
+        <material name="boxkdh_mat" shininess="0.5" reflectance="0" rgba="0.2 0.2 0.2 1"></material>
+ 
         <mesh file="base_link_collision.stl" name="robot0:base_link"></mesh>
         <mesh file="bellows_link_collision.stl" name="robot0:bellows_link"></mesh>
         <mesh file="elbow_flex_link_collision.stl" name="robot0:elbow_flex_link"></mesh>
@@ -33,6 +34,7 @@
         <mesh file="wrist_flex_link_collision.stl" name="robot0:wrist_flex_link"></mesh>
         <mesh file="wrist_roll_link_collision.stl" name="robot0:wrist_roll_link"></mesh>
         <mesh file="torso_fixed_link.stl" name="robot0:torso_fixed_link"></mesh>
+        <mesh file="boxkdh.stl" name="boxkdh" scale="0.007 0.007 0.007"></mesh>    
     </asset>
 
     <equality>

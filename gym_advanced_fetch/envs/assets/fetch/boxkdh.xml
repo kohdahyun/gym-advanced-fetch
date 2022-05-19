@@ -1,6 +1,7 @@
 <mujoco>
-    <body name="boxkdh" pos="2.5 0.65 0">
+    <body name="boxkdh" pos="1.9 0.75018422 0">
         <geom type="mesh" mesh="boxkdh" name="boxkdh" euler="1.57 0 0" material="boxkdh_mat" rgba="0.1 0.5 0.9 1" mass="2000"></geom>
-		<site name="boxkdh" pos="2.5 0.65 0" rgba="0.1 0.5 0.9 1"></site>
+		<!--site name="boxkdh" pos="0 0 0" rgba="0.1 0.5 0.9 1"></site-->
     </body>
 </mujoco>
+

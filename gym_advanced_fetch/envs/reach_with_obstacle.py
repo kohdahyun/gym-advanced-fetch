@@ -1,4 +1,5 @@
 import os
+import numpy as np
 from gym import utils
 from gym.envs.robotics import fetch_env
 
@@ -12,9 +13,35 @@ class FetchReachWithObstacleEnv(fetch_env.FetchEnv, utils.EzPickle):
             'robot0:slide1': 0.48,
             'robot0:slide2': 0.0,
         }
+        self.goal = np.zeros(shape=(3,))
         fetch_env.FetchEnv.__init__(
-            self, MODEL_XML_PATH, has_object=False, block_gripper=True, n_substeps=20,
-            gripper_extra_height=0.2, target_in_the_air=True, target_offset=0.0,
-            obj_range=0.15, target_range=0.15, distance_threshold=0.05,
-            initial_qpos=initial_qpos, reward_type=reward_type)
+            self,
+            MODEL_XML_PATH,
+            has_object=False,
+            block_gripper=True,
+            n_substeps=20,
+            gripper_extra_height=0.2,
+            target_in_the_air=True,
+            target_offset=0.0,
+            obj_range=0.15,
+            target_range=0.15,
+            distance_threshold=0.02,
+            initial_qpos=initial_qpos,
+            reward_type=reward_type,)
+        # go to fetch_env.py and fix _sample_goal()
         utils.EzPickle.__init__(self)
+        
+    def _sample_goal(self):
+        #return super()._sample_goal()
+        self.goal[0] = np.array(1.3)
+        while np.linalg.norm(self.goal[0] - np.array(1.3)) < 0.1:
+            self.goal[0] = np.array(1.3 + self.np_random.uniform(-0.125,0.125))
+            
+        self.goal[1] = np.array(0.75)
+        while np.linalg.norm(self.goal[1] - np.array(0.75)) < 0.1:
+            self.goal[1] = np.array(0.75 + self.np_random.uniform(-0.175,0.175))
+            
+        self.goal[2] = np.array(0.6 + self.np_random.uniform(
+            -0.18,0.2))
+          
+        return self.goal.copy() 
