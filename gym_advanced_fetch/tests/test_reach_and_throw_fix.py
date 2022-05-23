@@ -29,7 +29,7 @@ for ep in range(episodes):
     while not done:
     #for step in range(500):
         env.render()
-        #obs, reward, done, info = env.step(env.action_space.sample())
+        obs, reward, done, info = env.step(env.action_space.sample())
         #print(reward)
 
 env.close()

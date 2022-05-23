@@ -12,7 +12,7 @@ MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
 
-class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
+class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
         self.success = 0
         #------------------------------------------------------
@@ -23,11 +23,15 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.save_list = []
         self.change_list = 0
         #------------------------------------------------------
-        self.moving_point = np.zeros(shape=(3,))
-        self.slope = 0
+        #change cgbr-------------------------------------------
+        #self.moving_point = np.zeros(shape=(3,))
+        #self.slope = 0
         self.box_radius = 0.1
-        self.del_x = 0
-        self.del_y = 0
+        #self.del_x = 0
+        #self.del_y = 0
+        self.del_radius = 0
+        self.moving_radius = 0
+        #change cgbr-------------------------------------------
         initial_qpos = {
             "robot0:slide0": 0.4049,
             "robot0:slide1": 0.48,
@@ -170,35 +174,35 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         #--------------------------------------------------
             
         if ((self.success > 50) and (self.change_list == 0)):
-            with open('List_path_fix_1.csv','w') as file:
+            with open('List_path_fix_cgbr_1.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 1
                 
         if ((self.success > 100) and (self.change_list == 1)):
-            with open('List_path_fix_2.csv','w') as file:
+            with open('List_path_fix_cgbr_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 2
                 
         if ((self.success > 150) and (self.change_list == 2)):
-            with open('List_path_fix_3.csv','w') as file:
+            with open('List_path_fix_cgbr_3.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 3
                 
         if ((self.success > 200) and (self.change_list == 3)):
-            with open('List_path_fix_4.csv','w') as file:
+            with open('List_path_fix_cgbr_4.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 4
                 
         if ((self.success > 250) and (self.change_list == 4)):
-            with open('List_path_fix_5.csv','w') as file:
+            with open('List_path_fix_cgbr_5.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
@@ -206,7 +210,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 self.num_trial = 0
                 
         if ((self.success > 250) and (self.change_list == 5) and (self.num_trial > 20)):
-            with open('List_path_fix_6.csv','w') as file:
+            with open('List_path_fix_cgbr_6.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
@@ -234,32 +238,49 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.goal[2] = np.array(0.2)
         
         #---------------------------------------------------------------------------------------------
+        #change cgbr---------------------------------------------------------------------------------
+        # self.slope = (float)(self.goal[1]-self.object_qpos[1])/(self.goal[0]-self.object_qpos[0])
         
-        self.slope = (float)(self.goal[1]-self.object_qpos[1])/(self.goal[0]-self.object_qpos[0])
+        # self.moving_point[0] = np.array(1.4+0.1+self.box_radius)
+        # self.moving_point[1] = np.array(self.slope*(self.moving_point[0]-self.goal[0])+self.goal[1])
+        # self.moving_point[2] = self.goal[2]
         
-        self.moving_point[0] = np.array(1.4+0.1+self.box_radius)
-        self.moving_point[1] = np.array(self.slope*(self.moving_point[0]-self.goal[0])+self.goal[1])
-        self.moving_point[2] = self.goal[2]
+        # self.del_x = np.array((self.goal[0] - self.moving_point[0])/5)
+        # self.del_y = np.array((self.goal[1] - self.moving_point[1])/5)
         
-        self.del_x = np.array((self.goal[0] - self.moving_point[0])/5)
-        self.del_y = np.array((self.goal[1] - self.moving_point[1])/5)
+        # if (self.success > 250):
+        #     self.moving_point[0] += 5*self.del_x
+        #     self.moving_point[1] += 5*self.del_y
+        # elif (self.success > 200):
+        #     self.moving_point[0] += 4*self.del_x
+        #     self.moving_point[1] += 4*self.del_y
+        # elif (self.success > 150):
+        #     self.moving_point[0] += 3*self.del_x
+        #     self.moving_point[1] += 3*self.del_y
+        # elif (self.success > 100):
+        #     self.moving_point[0] += 2*self.del_x
+        #     self.moving_point[1] += 2*self.del_y
+        # elif (self.success > 50):
+        #     self.moving_point[0] += self.del_x
+        #     self.moving_point[1] += self.del_y
+        
+        self.moving_radius = np.array(self.box_radius + 5 * self.del_radius)
+        
+        #change to 0.2!
+        self.del_radius = np.array((0.2 - self.box_radius)/5)
+        #print("del_radius",self.del_radius)
         
         if (self.success > 250):
-            self.moving_point[0] += 5*self.del_x
-            self.moving_point[1] += 5*self.del_y
+            self.moving_radius = np.array(self.box_radius)
         elif (self.success > 200):
-            self.moving_point[0] += 4*self.del_x
-            self.moving_point[1] += 4*self.del_y
+            self.moving_radius = np.array(self.box_radius + self.del_radius)
         elif (self.success > 150):
-            self.moving_point[0] += 3*self.del_x
-            self.moving_point[1] += 3*self.del_y
+            self.moving_radius = np.array(self.box_radius + 2 * self.del_radius)
         elif (self.success > 100):
-            self.moving_point[0] += 2*self.del_x
-            self.moving_point[1] += 2*self.del_y
+            self.moving_radius = np.array(self.box_radius + 3 * self.del_radius)
         elif (self.success > 50):
-            self.moving_point[0] += self.del_x
-            self.moving_point[1] += self.del_y
-                
+            self.moving_radius = np.array(self.box_radius + 4 * self.del_radius)
+        #change cgbr----------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------
          
         return self.goal.copy() 
@@ -288,14 +309,21 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         #-------------------------------------------------------------------
         if self.reward_type == "sparse":
+            #change cgbr---------------------------------------------------------
+            # return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
+            #     # (self.object_qpos[2] > self.goal[2] - 0.1) &\
+            #     (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
+            #         (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
+            #             (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
+            #                 (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
+            #                     (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
+            #                         (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
             return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
-                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
-                (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
-                    (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
-                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
-                            (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
-                                (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
-                                    (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
+                (self.object_qpos[0] < self.goal[0] - self.moving_radius) |\
+                    (self.object_qpos[0] > self.goal[0] + self.moving_radius) |\
+                        (self.object_qpos[1] < self.goal[1] - self.moving_radius) |\
+                            (self.object_qpos[1] > self.goal[1] + self.moving_radius)).astype(np.float32)
+            #change cgbr--------------------------------------------------------------
 
         else:
             return -self.object_qpos 
@@ -315,22 +343,28 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         assert self.object_qpos.shape == (7,)
         
         #if (self.object_qpos[0] > 1.6).astype(np.float32):
-
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.05) &\
-            (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
-                    (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
-                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
-                            (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
-                                (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32).any()):
+        #change cgbr--------------------------------------------------------------------------
+        # if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.05) &\
+        #     (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+        #         (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+        #             (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+        #                 (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+        #                     (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+        #                         (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32).any()):
             
-            # print(((self.object_qpos[2] < self.goal[2] + 0.1) & (self.object_qpos[2] > self.goal[2] - 0.1) &\
-            # (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-            #     (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
-            #         (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
-            #             (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
-            #                 (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
-            #                     (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32))
+        #     # print(((self.object_qpos[2] < self.goal[2] + 0.1) & (self.object_qpos[2] > self.goal[2] - 0.1) &\
+        #     # (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+        #     #     (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+        #     #         (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+        #     #             (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+        #     #                 (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+        #     #                     (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32))
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.05) &\
+            (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
+                (self.object_qpos[0] < self.goal[0] +self.moving_radius) &\
+                    (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
+                        (self.object_qpos[1] < self.goal[1] + self.moving_radius)).astype(np.float32).any()):
+        #change cgbr---------------------------------------------------------------------------
             
             print(self.object_qpos)
                         
@@ -341,13 +375,20 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
             print(self.success)
         
         #return (self.object_qpos[0] > 1.6).astype(np.float32)
-        #----------------------------------------------------------------------------          
+        #----------------------------------------------------------------------------  
+        #change cgbr--------------------------------------------------------------------        
+        # return ((self.object_qpos[2] < self.goal[2]) &\
+        #         # (self.object_qpos[2] > self.goal[2] - 0.1) &\
+        #     (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+        #         (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+        #             (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+        #                 (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+        #                     (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+        #                         (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
         return ((self.object_qpos[2] < self.goal[2]) &\
-                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
-            (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
-                    (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
-                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
-                            (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
-                                (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
+            (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.moving_radius) &\
+                    (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
+                        (self.object_qpos[1] < self.goal[1] + self.moving_radius)).astype(np.float32)
+        #change cgbr----------------------------------------------------------------------------------
         
