@@ -6,6 +6,12 @@ from gym.envs.robotics import fetch_env
 MODEL_XML_PATH = os.path.join("fetch", "reach_with_obstacle.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
+def goal_distance(goal_a, goal_b):
+    assert goal_a.shape == goal_b.shape
+    #print(goal_a.shape)
+    return np.linalg.norm(goal_a - goal_b, axis=-1)
+    #return np.linalg.norm(goal_a - goal_b)
+
 class FetchReachWithObstacleEnv(fetch_env.FetchEnv, utils.EzPickle):
     def __init__(self, reward_type='sparse'):
         initial_qpos = {
@@ -45,3 +51,43 @@ class FetchReachWithObstacleEnv(fetch_env.FetchEnv, utils.EzPickle):
             -0.18,0.2))
           
         return self.goal.copy() 
+    
+    def _is_success(self, achieved_goal, desired_goal):
+        d = goal_distance(achieved_goal, desired_goal)
+        #print(d)
+        #return (d < self.distance_threshold).astype(np.float32)
+        
+        
+        if (d < self.distance_threshold).any():
+            return (d < self.distance_threshold).astype(np.float32)
+        else:
+            return (d < self.distance_threshold).astype(np.float32)
+        
+
+    def compute_reward(self, achieved_goal, goal, info):
+        # Compute distance between goal and the achieved goal.
+        d = goal_distance(achieved_goal, goal)
+        #print(d)
+        # print(d.shape)
+        # print(type(d))
+        #print(self.distance_threshold.shape)
+        #print(type(d))
+        
+        #print(type(self.distance_threshold))
+        #<no> print(self.distance_threshold.shape)
+        if self.reward_type == "sparse":
+            #print(d)
+            #print(self.distance_threshold)
+            # if (-(d > self.distance_threshold).astype(np.float32) != 0.0 and\
+            #     -(d > self.distance_threshold).astype(np.float32) != -1.0):
+            #     print(-(d > self.distance_threshold).astype(np.float32))
+            # return -(d > self.distance_threshold).astype(np.float32)
+            
+            
+            if (d > self.distance_threshold).all():
+                return -(d > self.distance_threshold).astype(np.float32)
+            else:
+                return -(d > self.distance_threshold).astype(np.float32)
+        else:
+            print("else", -d)
+            return -d

@@ -7,28 +7,33 @@ from gym.envs.robotics import fetch_env
 from gym.envs.robotics import rotations, utils
 
 
-MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw.xml")
+MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
 
-class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
+class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
         self.success = 0
         self.moving_point = np.zeros(shape=(3,))
         self.slope = 0
-        self.box_radius = 0.2
+        self.box_radius = 0.1
         self.del_x = 0
         self.del_y = 0
         initial_qpos = {
             "robot0:slide0": 0.4049,
             "robot0:slide1": 0.48,
             "robot0:slide2": 0.0,
-            "robot0:shoulder_lift_joint": - np.pi / 4,
+            # "robot0:shoulder_lift_joint": - 38 * np.pi / 180,
+            # "robot0:upperarm_roll_joint": 0,
+            # "robot0:elbow_flex_joint": np.pi / 6,
+            # "robot0:wrist_roll_joint": 0,
+            # "robot0:wrist_flex_joint": 38 * np.pi / 180,
+            "robot0:shoulder_lift_joint": 0,
             "robot0:upperarm_roll_joint": 0,
-            "robot0:elbow_flex_joint": np.pi / 6,
+            "robot0:elbow_flex_joint": 0,
             "robot0:wrist_roll_joint": 0,
-            "robot0:wrist_flex_joint": np.pi / 3,
-            "object0:joint": [1.3, 0.75018422, 0.62, 1., 0., 0., 0.],
+            "robot0:wrist_flex_joint": 0,
+            "object0:joint": [1.4, 0.74910048, 0.51, 1., 0., 0., 0.],
         }
         self.goal = np.zeros(shape=(3,))
         self.object_qpos = np.zeros(shape=(7,))
@@ -43,15 +48,41 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
             target_offset=0.0,
             obj_range=0.15,
             target_range=0.15,
-            distance_threshold=0.02,
+            distance_threshold=0.035,
             initial_qpos=initial_qpos,
             reward_type=reward_type,
         )
         ut.EzPickle.__init__(self, reward_type=reward_type)
         
+    def _set_action(self, action):
+        assert action.shape == (4,)
+        action = (
+            action.copy()
+        )  # ensure that we don't change the action outside of this scope
+        pos_ctrl, gripper_ctrl = action[:3], action[3]
+
+        pos_ctrl *= 0.1  # limit maximum change in position
+        
+        rot_ctrl = [
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+        ]  # fixed rotation of the end effector, expressed as a quaternion
+        gripper_ctrl = np.array([gripper_ctrl, gripper_ctrl])
+        assert gripper_ctrl.shape == (2,)
+        if self.block_gripper:
+            gripper_ctrl = np.zeros_like(gripper_ctrl)
+        action = np.concatenate([pos_ctrl, rot_ctrl, gripper_ctrl])
+
+        # Apply action to simulation.
+        utils.ctrl_set_action(self.sim, action)
+        utils.mocap_set_action(self.sim, action)
+        
     def _get_obs(self):
         # positions
         grip_pos = self.sim.data.get_site_xpos("robot0:grip")
+        #print(grip_pos)
         dt = self.sim.nsubsteps * self.sim.model.opt.timestep
         grip_velp = self.sim.data.get_site_xvelp("robot0:grip") * dt
         robot_qpos, robot_qvel = utils.robot_get_obs(self.sim)
@@ -104,10 +135,11 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
         # table1 center: np.array([1.45 0.75018422 0.7]
         # table size: 0.1 0.45 0.35
         # constant height: 0.7 + 0.02
+        # 1.4 0.74910048 0.51
         
-        self.object_qpos[0] = np.array(1.3 + self.np_random.uniform(-0.045,0.045))      
-        self.object_qpos[1] = np.array(0.75018422 + self.np_random.uniform(-0.17,0.17))     
-        self.object_qpos[2] = np.array(0.62)  
+        self.object_qpos[0] = np.array(1.4)      
+        self.object_qpos[1] = np.array(0.74910048)     
+        self.object_qpos[2] = np.array(0.51)  
             
         self.sim.data.set_joint_qpos("object0:joint", self.object_qpos)
             
@@ -124,21 +156,21 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
         # box center: 2.2 0.75018422 0.01
         
         self.goal[0] = np.array(2.2)
-        self.goal[1] = np.array(0.75018422)
-        self.goal[2] = np.array(0.4)
+        self.goal[1] = np.array(0.74910048)
+        self.goal[2] = np.array(0.2)
         
         #---------------------------------------------------------------------------------------------
         
         self.slope = (float)(self.goal[1]-self.object_qpos[1])/(self.goal[0]-self.object_qpos[0])
         
-        self.moving_point[0] = np.array(1.3+0.1+self.box_radius)
+        self.moving_point[0] = np.array(1.4+0.1+self.box_radius)
         self.moving_point[1] = np.array(self.slope*(self.moving_point[0]-self.goal[0])+self.goal[1])
         self.moving_point[2] = self.goal[2]
         
         self.del_x = np.array((self.goal[0] - self.moving_point[0])/5)
         self.del_y = np.array((self.goal[1] - self.moving_point[1])/5)
         
-        if ((self.success > 250) and (self.moving_point[0] != self.goal[0])):
+        if (self.success > 250):
             self.moving_point[0] += 5*self.del_x
             self.moving_point[1] += 5*self.del_y
         elif (self.success > 200):
@@ -172,8 +204,6 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
         # else:
         #     return -d
         
-        
-        
         self.object_qpos = self.sim.data.get_joint_qpos("object0:joint")
         assert self.object_qpos.shape == (7,)
         
@@ -184,23 +214,19 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         #-------------------------------------------------------------------
         if self.reward_type == "sparse":
-            if ((self.object_qpos[2] < self.goal[2] + 0.1) and (self.object_qpos[2] > self.goal[2] - 0.1) and \
-                (self.object_qpos[0] > np.array(self.moving_point[0] - self.box_radius)) and \
-                    (self.object_qpos[0] < np.array(self.goal[0] + self.box_radius)) and \
-                        (self.object_qpos[1] > np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius)) and \
-                            (self.object_qpos[1] < np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius)) and \
-                                (self.object_qpos[1] > np.array(self.goal[1] - self.box_radius)) and \
-                                    (self.object_qpos[1] < np.array(self.moving_point[1] + self.box_radius))):
-                                        return (np.array(0)).astype(np.float32)
-            else:
-                return (np.array(-1)).astype(np.float32)
+            return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
+                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
+                (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
+                    (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
+                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
+                            (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
+                                (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
+                                    (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
+
         else:
-            return -self.object_qpos[0] 
+            return -self.object_qpos 
             
-        #---------------------------------------------------------------------
-        
-        
-        
+        #---------------------------------------------------------------------  
         
     def _is_success(self, achieved_goal, desired_goal):
         # assert achieved_goal.shape == desired_goal.shape
@@ -210,33 +236,41 @@ class FetchReachAndThrowEnv(fetch_env.FetchEnv, ut.EzPickle):
         #     print(self.success)
         # #return (d < self.distance_threshold).astype(np.float32)
         # return (d < 0.7).astype(np.float32)
-    
+
         self.object_qpos = self.sim.data.get_joint_qpos("object0:joint")
         assert self.object_qpos.shape == (7,)
         
         #if (self.object_qpos[0] > 1.6).astype(np.float32):
 
-        if ((self.object_qpos[2] < self.goal[2] + 0.1) and (self.object_qpos[2] > self.goal[2] - 0.1) and \
-            (self.object_qpos[0] > np.array(self.moving_point[0] - self.box_radius)) and \
-                (self.object_qpos[0] < np.array(self.goal[0] + self.box_radius)) and \
-                    (self.object_qpos[1] > np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius)) and \
-                        (self.object_qpos[1] < np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius)) and \
-                            (self.object_qpos[1] > np.array(self.goal[1] - self.box_radius)) and \
-                                (self.object_qpos[1] < np.array(self.moving_point[1] + self.box_radius))):
-                                        
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.05) &\
+            (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+                    (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+                            (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+                                (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32).any()):
+            
+            # print(((self.object_qpos[2] < self.goal[2] + 0.1) & (self.object_qpos[2] > self.goal[2] - 0.1) &\
+            # (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+            #     (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+            #         (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+            #             (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+            #                 (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+            #                     (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32))
+            
+            print(self.object_qpos)
+                        
             self.success += 1
             print(self.success)
         
         #return (self.object_qpos[0] > 1.6).astype(np.float32)
-    #----------------------------------------------------------------------------           
-        if ((self.object_qpos[2] < self.goal[2] + 0.1) and (self.object_qpos[2] > self.goal[2] - 0.1) and \
-            (self.object_qpos[0] > np.array(self.moving_point[0] - self.box_radius)) and \
-                (self.object_qpos[0] < np.array(self.goal[0] + self.box_radius)) and \
-                    (self.object_qpos[1] > np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius)) and \
-                        (self.object_qpos[1] < np.array(self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius)) and \
-                            (self.object_qpos[1] > np.array(self.goal[1] - self.box_radius)) and \
-                                (self.object_qpos[1] < np.array(self.moving_point[1] + self.box_radius))):
-                                    return (np.array(1)).astype(np.float32)
-        else:
-            return (np.array(0)).astype(np.float32)
-
+        #----------------------------------------------------------------------------          
+        return ((self.object_qpos[2] < self.goal[2]) &\
+                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
+            (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+                    (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+                            (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+                                (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
+        

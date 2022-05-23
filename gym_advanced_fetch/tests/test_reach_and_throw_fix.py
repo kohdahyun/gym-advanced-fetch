@@ -5,11 +5,14 @@ from gym import spaces
 #from reach_and_throw import FetchReachAndThrowEnv
 #from slide import FetchSlideEnv
 #from reach_with_obstacle import FetchReachWithObstacleEnv
-from reach_and_throw import FetchReachAndThrowEnv
+from gym_advanced_fetch.envs.reach_and_throw_fix import FetchReachAndThrowFixEnv
+from stable_baselines3.common.env_checker import check_env
 
 #env = FetchReachEnv()
-env = FetchReachAndThrowEnv()
+env = FetchReachAndThrowFixEnv()
 #env = FetchSlideEnv()
+
+#check_env(env, warn=True)
 
 env.reset()
 
@@ -26,7 +29,7 @@ for ep in range(episodes):
     while not done:
     #for step in range(500):
         env.render()
-        obs, reward, done, info = env.step(env.action_space.sample())
+        #obs, reward, done, info = env.step(env.action_space.sample())
         #print(reward)
 
 env.close()

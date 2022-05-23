@@ -1,2 +1,4 @@
 from gym_advanced_fetch.envs.reach_and_throw import FetchReachAndThrowEnv
 from gym_advanced_fetch.envs.reach_with_obstacle import FetchReachWithObstacleEnv
+from gym_advanced_fetch.envs.reach_and_throw_with_path import FetchReachAndThrowWithPathEnv
+from gym_advanced_fetch.envs.reach_and_throw_fix import FetchReachAndThrowFixEnv
