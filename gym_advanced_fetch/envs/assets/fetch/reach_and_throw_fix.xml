@@ -10,7 +10,7 @@
 	<worldbody>
 		<geom name="floor0" pos="1 0.75 0" size="5 0.7 1" type="plane" condim="3" material="floor_mat"></geom>
 		<body name="floor0" pos="1 0.75 0">
-			<site name="target0" pos="2.2 0.74910048 0.2" size="0.01" rgba="1 0 0 1" type="sphere"></site>
+			<site name="target0" pos="2.4 0.74910048 0.23" size="0.01" rgba="1 0 0 1" type="sphere"></site>
 			<!--site name="target0" pos="1.12066391 0.74909152 0.70550867" size="0.08" rgba="1 0 0 1" type="sphere"></site-->
 		</body>
 
@@ -53,20 +53,20 @@
 			<geom size="0.03" type="sphere" mass="2000" material="boxkdh_mat"></geom>
 		</body-->
 
-		<body name="box0" pos="2.2 0.74910048 0.005">
-			<geom size="0.1 0.1 0.005" type="box" condim="3" name="box0" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
+		<body name="box0" pos="2.4 0.74910048 0.002">
+			<geom size="0.1 0.1 0.002" type="box" condim="3" name="box0" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
 		</body>
-		<body name="box1" pos="2.105 0.74910048 0.1">
-			<geom size="0.005 0.1 0.1" type="box" condim="3" name="box1" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
+		<body name="box1" pos="2.295 0.74910048 0.1">
+			<geom size="0.002 0.104 0.1" type="box" condim="3" name="box1" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
 		</body>
-		<body name="box2" pos="2.295 0.74910048 0.1">
-			<geom size="0.005 0.1 0.1" type="box" condim="3" name="box2" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
+		<body name="box2" pos="2.505 0.74910048 0.1">
+			<geom size="0.002 0.104 0.1" type="box" condim="3" name="box2" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
 		</body>
-		<body name="box3" pos="2.2 0.65410048 0.1">
-			<geom size="0.1 0.005 0.1" type="box" condim="3" name="box3" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
+		<body name="box3" pos="2.4 0.64410048 0.1">
+			<geom size="0.104 0.002 0.1" type="box" condim="3" name="box3" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
 		</body>
-		<body name="box4" pos="2.2 0.84410048 0.1">
-			<geom size="0.1 0.005 0.1" type="box" condim="3" name="box4" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
+		<body name="box4" pos="2.4 0.85410048 0.1">
+			<geom size="0.104 0.002 0.1" type="box" condim="3" name="box4" material="table_mat" mass="2000" friction="0.1 0.005 0.0001"></geom>
 		</body>
 
 		<light directional="true" ambient="0.2 0.2 0.2" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3" castshadow="false" pos="0 0 4" dir="0 0 -1" name="light0"></light>

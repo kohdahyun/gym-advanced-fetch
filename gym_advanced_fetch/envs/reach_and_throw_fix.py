@@ -22,6 +22,8 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.num_trial = 0
         self.save_list = []
         self.change_list = 0
+        self.x_list = []
+        self.y_list = []
         #------------------------------------------------------
         self.moving_point = np.zeros(shape=(3,))
         self.slope = 0
@@ -70,7 +72,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         )  # ensure that we don't change the action outside of this scope
         pos_ctrl, gripper_ctrl = action[:3], action[3]
 
-        pos_ctrl *= 0.1  # limit maximum change in position
+        pos_ctrl *= 0.15  # limit maximum change in position
         
         rot_ctrl = [
             1.0,
@@ -210,7 +212,18 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
-                self.change_list = 6
+                
+            with open('List_path_fix_pos_x_1.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_pos_y_1.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)
+                              
+            self.change_list = 6
         
         self.old_success = 0
         #----------------------------------------------------------
@@ -229,9 +242,9 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         # box center: 2.2 0.75018422 0.01
         
-        self.goal[0] = np.array(2.2)
+        self.goal[0] = np.array(2.4)
         self.goal[1] = np.array(0.74910048)
-        self.goal[2] = np.array(0.2)
+        self.goal[2] = np.array(0.23)
         
         #---------------------------------------------------------------------------------------------
         
@@ -316,7 +329,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         #if (self.object_qpos[0] > 1.6).astype(np.float32):
 
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.05) &\
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01) &\
             (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
                 (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
                     (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
@@ -339,6 +352,10 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
             self.old_success += 1
             #-----------------------------------------
             print(self.success)
+            
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01)).astype(np.float32).any()):
+            self.x_list.append(self.object_qpos[0])
+            self.y_list.append(self.object_qpos[1])
         
         #return (self.object_qpos[0] > 1.6).astype(np.float32)
         #----------------------------------------------------------------------------          
