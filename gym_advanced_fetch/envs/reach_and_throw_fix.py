@@ -172,58 +172,107 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         #--------------------------------------------------
             
         if ((self.success > 50) and (self.change_list == 0)):
-            with open('List_path_fix_1.csv','w') as file:
+            with open('List_path_fix_1_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 1
                 
+            with open('List_path_fix_1_pos_x_2.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_1_pos_y_2.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)   
+                
         if ((self.success > 100) and (self.change_list == 1)):
-            with open('List_path_fix_2.csv','w') as file:
+            with open('List_path_fix_2_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 2
                 
+            with open('List_path_fix_2_pos_x_2.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_2_pos_y_2.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)   
+                
         if ((self.success > 150) and (self.change_list == 2)):
-            with open('List_path_fix_3.csv','w') as file:
+            with open('List_path_fix_3_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 3
                 
+            with open('List_path_fix_3_pos_x_2.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_3_pos_y_2.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)   
+                
         if ((self.success > 200) and (self.change_list == 3)):
-            with open('List_path_fix_4.csv','w') as file:
+            with open('List_path_fix_4_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 4
                 
-        if ((self.success > 250) and (self.change_list == 4)):
-            with open('List_path_fix_5.csv','w') as file:
-                
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 5
-                self.num_trial = 0
-                
-        if ((self.success > 250) and (self.change_list == 5) and (self.num_trial > 20)):
-            with open('List_path_fix_6.csv','w') as file:
-                
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                
-            with open('List_path_fix_pos_x_1.csv','w') as file_x:
+            with open('List_path_fix_4_pos_x_2.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_pos_y_1.csv','w') as file_y:
+            with open('List_path_fix_4_pos_y_2.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
-                write_y.writerow(self.y_list)
-                              
-            self.change_list = 6
+                write_y.writerow(self.y_list)   
+                
+        if ((self.success > 250) and (self.change_list == 4)):
+            with open('List_path_fix_5_2.csv','w') as file:
+                
+                write = csv.writer(file)
+                write.writerow(self.save_list)
+                self.change_list = 5
+                #self.num_trial = 0
+                
+            with open('List_path_fix_5_pos_x_2.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_5_pos_y_2.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)   
+                
+        if ((self.success > 300) and (self.change_list == 5)):
+            with open('List_path_fix_6_2.csv','w') as file:
+                
+                write = csv.writer(file)
+                write.writerow(self.save_list)
+                self.change_list = 6
+                
+            with open('List_path_fix_6_pos_x_2.csv','w') as file_x:
+                
+                write_x = csv.writer(file_x)
+                write_x.writerow(self.x_list)
+                
+            with open('List_path_fix_6_pos_y_2.csv','w') as file_y:
+                
+                write_y = csv.writer(file_y)
+                write_y.writerow(self.y_list)           
         
         self.old_success = 0
         #----------------------------------------------------------
