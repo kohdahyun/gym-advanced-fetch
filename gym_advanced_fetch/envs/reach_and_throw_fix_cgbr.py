@@ -382,11 +382,11 @@ class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
             #                     (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
             #                         (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
             return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
-                (self.object_qpos[2] < self.goal[2] - 0.01) |\
-                    (self.object_qpos[0] < self.goal[0] - self.moving_radius) |\
-                        (self.object_qpos[0] > self.goal[0] + self.moving_radius) |\
-                            (self.object_qpos[1] < self.goal[1] - self.moving_radius) |\
-                                (self.object_qpos[1] > self.goal[1] + self.moving_radius)).astype(np.float32)
+                #(self.object_qpos[2] < self.goal[2] - 0.01) |\
+                (self.object_qpos[0] < self.goal[0] - self.moving_radius) |\
+                    (self.object_qpos[0] > self.goal[0] + self.moving_radius) |\
+                        (self.object_qpos[1] < self.goal[1] - self.moving_radius) |\
+                            (self.object_qpos[1] > self.goal[1] + self.moving_radius)).astype(np.float32)
             #change cgbr--------------------------------------------------------------
 
         else:
@@ -454,10 +454,10 @@ class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
         #                     (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
         #                         (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
         return ((self.object_qpos[2] < self.goal[2] + 0.05) &\
-            (self.object_qpos[2] > self.goal[2] - 0.01) &\
-                (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
-                    (self.object_qpos[0] < self.goal[0] + self.moving_radius) &\
-                        (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
-                            (self.object_qpos[1] < self.goal[1] + self.moving_radius)).astype(np.float32)
+            #(self.object_qpos[2] > self.goal[2] - 0.01) &\
+            (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.moving_radius) &\
+                    (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
+                        (self.object_qpos[1] < self.goal[1] + self.moving_radius)).astype(np.float32)
         #change cgbr----------------------------------------------------------------------------------
         
