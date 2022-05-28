@@ -11,6 +11,7 @@ from gym.envs.robotics import rotations, utils
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
+save_list_path = "./lists/4/path_tqc/"
 
 class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
@@ -160,7 +161,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
             self.trial_success += 1
             #print("trial_success", self.trial_success)
             
-        if (self.trial > 50):
+        if (self.trial > 14):
             #save success rate
             self.save_list.append(self.trial_success/self.trial)
             self.num_trial += 1
@@ -171,105 +172,105 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
             
         #--------------------------------------------------
             
-        if ((self.success > 50) and (self.change_list == 0)):
-            with open('List_path_fix_1_2.csv','w') as file:
+        if ((self.success > 29) and (self.change_list == 0)):
+            with open(save_list_path + 'List_path_fix_1.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 1
                 
-            with open('List_path_fix_1_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_1_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_1_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_1_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.success > 100) and (self.change_list == 1)):
-            with open('List_path_fix_2_2.csv','w') as file:
+        if ((self.success > 59) and (self.change_list == 1)):
+            with open(save_list_path + 'List_path_fix_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 2
                 
-            with open('List_path_fix_2_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_2_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_2_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_2_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.success > 150) and (self.change_list == 2)):
-            with open('List_path_fix_3_2.csv','w') as file:
+        if ((self.success > 89) and (self.change_list == 2)):
+            with open(save_list_path + 'List_path_fix_3.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 3
                 
-            with open('List_path_fix_3_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_3_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_3_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_3_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.success > 200) and (self.change_list == 3)):
-            with open('List_path_fix_4_2.csv','w') as file:
+        if ((self.success > 119) and (self.change_list == 3)):
+            with open(save_list_path + 'List_path_fix_4.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 4
                 
-            with open('List_path_fix_4_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_4_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_4_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_4_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.success > 250) and (self.change_list == 4)):
-            with open('List_path_fix_5_2.csv','w') as file:
+        if ((self.success > 149) and (self.change_list == 4)):
+            with open(save_list_path + 'List_path_fix_5.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 5
                 #self.num_trial = 0
                 
-            with open('List_path_fix_5_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_5_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_5_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_5_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.success > 300) and (self.change_list == 5)):
-            with open('List_path_fix_6_2.csv','w') as file:
+        if ((self.success > 179) and (self.change_list == 5)):
+            with open(save_list_path + 'List_path_fix_6.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 6
                 
-            with open('List_path_fix_6_pos_x_2.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_6_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open('List_path_fix_6_pos_y_2.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_6_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)           
@@ -306,19 +307,19 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.del_x = np.array((self.goal[0] - self.moving_point[0])/5)
         self.del_y = np.array((self.goal[1] - self.moving_point[1])/5)
         
-        if (self.success > 250):
+        if (self.success > 149):
             self.moving_point[0] += 5*self.del_x
             self.moving_point[1] += 5*self.del_y
-        elif (self.success > 200):
+        elif (self.success > 119):
             self.moving_point[0] += 4*self.del_x
             self.moving_point[1] += 4*self.del_y
-        elif (self.success > 150):
+        elif (self.success > 89):
             self.moving_point[0] += 3*self.del_x
             self.moving_point[1] += 3*self.del_y
-        elif (self.success > 100):
+        elif (self.success > 59):
             self.moving_point[0] += 2*self.del_x
             self.moving_point[1] += 2*self.del_y
-        elif (self.success > 50):
+        elif (self.success > 29):
             self.moving_point[0] += self.del_x
             self.moving_point[1] += self.del_y
                 
@@ -351,13 +352,13 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         #-------------------------------------------------------------------
         if self.reward_type == "sparse":
             return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
-                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
-                (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
-                    (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
-                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
-                            (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
-                                (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
-                                    (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
+                (self.object_qpos[2] < self.goal[2] - 0.01) |\
+                    (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
+                        (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
+                            (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
+                                (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
+                                    (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
+                                        (self.object_qpos[1] > self.moving_point[1] + self.box_radius)).astype(np.float32)
 
         else:
             return -self.object_qpos 
@@ -408,12 +409,12 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         #return (self.object_qpos[0] > 1.6).astype(np.float32)
         #----------------------------------------------------------------------------          
-        return ((self.object_qpos[2] < self.goal[2]) &\
-                # (self.object_qpos[2] > self.goal[2] - 0.1) &\
-            (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
-                    (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
-                        (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
-                            (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
-                                (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
+        return ((self.object_qpos[2] < self.goal[2] + 0.05) &\
+            (self.object_qpos[2] > self.goal[2] - 0.01) &\
+                (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
+                    (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+                        (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
+                            (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
+                                (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
+                                    (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32)
         

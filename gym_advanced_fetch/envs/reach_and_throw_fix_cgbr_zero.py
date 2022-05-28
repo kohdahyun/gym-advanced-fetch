@@ -11,9 +11,9 @@ from gym.envs.robotics import rotations, utils
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
-save_list_path = "./lists/4/large_cgbr/"
+save_list_path = "./lists/4/small_cgbr/"
 
-class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
+class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
         self.success = 0
         #------------------------------------------------------
@@ -177,104 +177,104 @@ class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
         #--------------------------------------------------
             
         if ((self.success > 29) and (self.change_list == 0)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_1.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_1.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 1
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_1_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_1_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_1_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_1_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
         if ((self.success > 59) and (self.change_list == 1)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_2.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_2.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 2
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_2_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_2_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_2_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_2_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
         if ((self.success > 89) and (self.change_list == 2)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_3.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_3.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 3
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_3_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_3_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_3_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_3_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
         if ((self.success > 119) and (self.change_list == 3)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_4.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_4.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 4
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_4_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_4_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_4_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_4_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
         if ((self.success > 149) and (self.change_list == 4)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_5.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_5.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 5
                 #self.num_trial = 0
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_5_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_5_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_5_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_5_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
         if ((self.success > 179) and (self.change_list == 5)):
-            with open(save_list_path + 'List_path_fix_cgbr_large_6.csv','w') as file:
+            with open(save_list_path + 'List_path_fix_cgbr_small_6.csv','w') as file:
                 
                 write = csv.writer(file)
                 write.writerow(self.save_list)
                 self.change_list = 6
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_6_pos_x.csv','w') as file_x:
+            with open(save_list_path + 'List_path_fix_cgbr_small_6_pos_x.csv','w') as file_x:
                 
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
-            with open(save_list_path + 'List_path_fix_cgbr_large_6_pos_y.csv','w') as file_y:
+            with open(save_list_path + 'List_path_fix_cgbr_small_6_pos_y.csv','w') as file_y:
                 
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)       
@@ -330,7 +330,7 @@ class FetchReachAndThrowFixCgbrEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.moving_radius = np.array(self.box_radius + 5 * self.del_radius)
         
         #change to 0.2!
-        self.del_radius = np.array((0.9 - self.box_radius)/5)
+        self.del_radius = np.array((0.2236 - self.box_radius)/5)
         #print("del_radius",self.del_radius)
         
         if (self.success > 149):

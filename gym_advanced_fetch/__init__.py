@@ -29,3 +29,9 @@ register(
         entry_point="gym_advanced_fetch.envs:FetchReachAndThrowFixCgbrEnv",
         max_episode_steps=50,
         )
+
+register(
+        id="FetchReachAndThrowFixCgbrZero-v0",
+        entry_point="gym_advanced_fetch.envs:FetchReachAndThrowFixCgbrZeroEnv",
+        max_episode_steps=50,
+        )
