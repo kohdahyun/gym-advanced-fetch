@@ -11,7 +11,7 @@ from gym.envs.robotics import rotations, utils
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
-save_list_path = "./lists/4/small_cgbr/"
+save_list_path = "./lists/total/small_cgbr/triple/"
 
 class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
@@ -176,7 +176,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
             
         #--------------------------------------------------
             
-        if ((self.success > 29) and (self.change_list == 0)):
+        if ((self.num_trial > 4) and (self.change_list == 0)):
             with open(save_list_path + 'List_path_fix_cgbr_small_1.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -193,7 +193,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.success > 59) and (self.change_list == 1)):
+        if ((self.num_trial > 9) and (self.change_list == 1)):
             with open(save_list_path + 'List_path_fix_cgbr_small_2.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -210,7 +210,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.success > 89) and (self.change_list == 2)):
+        if ((self.num_trial > 14) and (self.change_list == 2)):
             with open(save_list_path + 'List_path_fix_cgbr_small_3.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -227,7 +227,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.success > 119) and (self.change_list == 3)):
+        if ((self.num_trial > 19) and (self.change_list == 3)):
             with open(save_list_path + 'List_path_fix_cgbr_small_4.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -244,7 +244,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.success > 149) and (self.change_list == 4)):
+        if ((self.num_trial > 24) and (self.change_list == 4)):
             with open(save_list_path + 'List_path_fix_cgbr_small_5.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -262,7 +262,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.success > 179) and (self.change_list == 5)):
+        if ((self.num_trial > 29) and (self.change_list == 5)):
             with open(save_list_path + 'List_path_fix_cgbr_small_6.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -330,18 +330,18 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.moving_radius = np.array(self.box_radius + 5 * self.del_radius)
         
         #change to 0.2!
-        self.del_radius = np.array((0.2236 - self.box_radius)/5)
+        self.del_radius = np.array((0.3873 - self.box_radius)/5)
         #print("del_radius",self.del_radius)
         
-        if (self.success > 149):
+        if (self.num_trial > 24):
             self.moving_radius = np.array(self.box_radius)
-        elif (self.success > 119):
+        elif (self.num_trial > 19):
             self.moving_radius = np.array(self.box_radius + self.del_radius)
-        elif (self.success > 89):
+        elif (self.num_trial > 14):
             self.moving_radius = np.array(self.box_radius + 2 * self.del_radius)
-        elif (self.success > 59):
+        elif (self.num_trial > 9):
             self.moving_radius = np.array(self.box_radius + 3 * self.del_radius)
-        elif (self.success > 29):
+        elif (self.num_trial > 4):
             self.moving_radius = np.array(self.box_radius + 4 * self.del_radius)
         #change cgbr----------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------
