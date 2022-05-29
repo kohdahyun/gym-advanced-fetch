@@ -16,7 +16,7 @@ save_list_path = "./lists/sac/" + str(datetime.datetime.now()) + "/"
 
 def check_if_directory_exists():
     if not os.path.exists(save_list_path):
-    os.makedirs(save_list_path)
+        os.makedirs(save_list_path)
 
 class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
