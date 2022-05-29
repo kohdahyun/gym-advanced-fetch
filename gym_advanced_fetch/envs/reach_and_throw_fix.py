@@ -1,17 +1,22 @@
 import os
 from math import pi
 import csv
+import datetime
+
 import numpy as np
 from gym import utils as ut
 from gym.envs.robotics import fetch_env
-
 from gym.envs.robotics import rotations, utils
 
 
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
-save_list_path = "./lists/sub_com/sac/"
+save_list_path = "./lists/sac/" + str(datetime.datetime.now()) + "/"
+
+def check_if_directory_exists():
+    if not os.path.exists(save_list_path):
+    os.makedirs(save_list_path)
 
 class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
@@ -173,6 +178,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
         #--------------------------------------------------
             
         if ((self.success > 29) and (self.change_list == 0)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_1.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -180,7 +186,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 self.change_list = 1
                 
             with open(save_list_path + 'List_path_fix_1_pos_x.csv','w') as file_x:
-                
+                                
                 write_x = csv.writer(file_x)
                 write_x.writerow(self.x_list)
                 
@@ -190,6 +196,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y.writerow(self.y_list)   
                 
         if ((self.success > 59) and (self.change_list == 1)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_2.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -207,6 +214,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y.writerow(self.y_list)   
                 
         if ((self.success > 89) and (self.change_list == 2)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_3.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -224,6 +232,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y.writerow(self.y_list)   
                 
         if ((self.success > 119) and (self.change_list == 3)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_4.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -241,6 +250,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y.writerow(self.y_list)   
                 
         if ((self.success > 149) and (self.change_list == 4)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_5.csv','w') as file:
                 
                 write = csv.writer(file)
@@ -259,6 +269,7 @@ class FetchReachAndThrowFixEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y.writerow(self.y_list)   
                 
         if ((self.success > 179) and (self.change_list == 5)):
+            check_if_directory_exists()
             with open(save_list_path + 'List_path_fix_6.csv','w') as file:
                 
                 write = csv.writer(file)
