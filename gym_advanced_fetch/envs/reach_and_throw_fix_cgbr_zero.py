@@ -1,27 +1,32 @@
 import os
 from math import pi
 import csv
+import datetime
+
 import numpy as np
 from gym import utils as ut
 from gym.envs.robotics import fetch_env
-
 from gym.envs.robotics import rotations, utils
 
 
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
-save_list_path = "./lists/total/small_cgbr/triple/"
+save_list_path = "./lists/less_test/box_only/" + str(datetime.datetime.now()) + "/"
+
+def check_if_directory_exists():
+    if not os.path.exists(save_list_path):
+        os.makedirs(save_list_path)
 
 class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
         self.success = 0
         #------------------------------------------------------
-        self.old_success = 0
-        self.trial_success = 0
+        #self.old_success = 0
+        #self.trial_success = 0
         self.trial = 0
         self.num_trial = 0
-        self.save_list = []
+        #self.save_list = []
         self.change_list = 0
         self.x_list = []
         self.y_list = []
@@ -161,27 +166,28 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.trial += 1
         #print("trial", self.trial)
         
-        if (self.old_success != 0):
-            self.trial_success += 1
+        #if (self.old_success != 0):
+            #self.trial_success += 1
             #print("trial_success", self.trial_success)
             
-        if (self.trial > 14):
+        #if (self.trial > 3):
             #save success rate
-            self.save_list.append(self.trial_success/self.trial)
-            self.num_trial += 1
+            #self.save_list.append(self.trial_success/self.trial)
+            #self.num_trial += 1
             #print("num_trial", self.num_trial)
         
-            self.trial = 0
-            self.trial_success = 0
+            #self.trial = 0
+            #self.trial_success = 0
             
         #--------------------------------------------------
             
-        if ((self.num_trial > 4) and (self.change_list == 0)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_1.csv','w') as file:
+        if ((self.trial > 2 * 4 * 2) and (self.change_list == 0)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_1.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 1
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 1
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_1_pos_x.csv','w') as file_x:
                 
@@ -193,12 +199,13 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.num_trial > 9) and (self.change_list == 1)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_2.csv','w') as file:
+        if ((self.trial > 5 * 4 * 2) and (self.change_list == 1)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_2.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 2
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 2
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_2_pos_x.csv','w') as file_x:
                 
@@ -210,12 +217,13 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.num_trial > 14) and (self.change_list == 2)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_3.csv','w') as file:
+        if ((self.trial > 8 * 4 * 2) and (self.change_list == 2)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_3.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 3
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 3
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_3_pos_x.csv','w') as file_x:
                 
@@ -227,12 +235,13 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.num_trial > 19) and (self.change_list == 3)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_4.csv','w') as file:
+        if ((self.trial > 11 * 4 * 2) and (self.change_list == 3)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_4.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 4
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 4
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_4_pos_x.csv','w') as file_x:
                 
@@ -244,12 +253,13 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.num_trial > 24) and (self.change_list == 4)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_5.csv','w') as file:
+        if ((self.trial > 14 * 4 * 2) and (self.change_list == 4)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_5.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 5
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 5
                 #self.num_trial = 0
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_5_pos_x.csv','w') as file_x:
@@ -262,12 +272,13 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)
                 
-        if ((self.num_trial > 29) and (self.change_list == 5)):
-            with open(save_list_path + 'List_path_fix_cgbr_small_6.csv','w') as file:
+        if ((self.trial > 17 * 4 * 2) and (self.change_list == 5)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_cgbr_small_6.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 6
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 6
                 
             with open(save_list_path + 'List_path_fix_cgbr_small_6_pos_x.csv','w') as file_x:
                 
@@ -279,7 +290,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)       
         
-        self.old_success = 0
+        #self.old_success = 0
         #----------------------------------------------------------
             
         self.sim.data.set_joint_qpos("object0:joint", self.object_qpos)
@@ -296,7 +307,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         # box center: 2.2 0.75018422 0.01
         
-        self.goal[0] = np.array(2.4)
+        self.goal[0] = np.array(2.2)
         self.goal[1] = np.array(0.74910048)
         self.goal[2] = np.array(0.23)
         
@@ -330,18 +341,18 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.moving_radius = np.array(self.box_radius + 5 * self.del_radius)
         
         #change to 0.2!
-        self.del_radius = np.array((0.3873 - self.box_radius)/5)
+        self.del_radius = np.array((0.1 - self.box_radius)/5)
         #print("del_radius",self.del_radius)
         
-        if (self.num_trial > 24):
+        if (self.trial > 15 * 4 * 2 - 1):
             self.moving_radius = np.array(self.box_radius)
-        elif (self.num_trial > 19):
+        elif (self.trial > 3 * 16 * 2 - 1):
             self.moving_radius = np.array(self.box_radius + self.del_radius)
-        elif (self.num_trial > 14):
+        elif (self.trial > 3 * 12 * 2 - 1):
             self.moving_radius = np.array(self.box_radius + 2 * self.del_radius)
-        elif (self.num_trial > 9):
+        elif (self.trial > 3 * 8 * 2 - 1):
             self.moving_radius = np.array(self.box_radius + 3 * self.del_radius)
-        elif (self.num_trial > 4):
+        elif (self.trial > 3 * 4 * 2 - 1):
             self.moving_radius = np.array(self.box_radius + 4 * self.del_radius)
         #change cgbr----------------------------------------------------------------------------------
         #----------------------------------------------------------------------------------------------
@@ -423,7 +434,7 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         #     #             (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
         #     #                 (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
         #     #                     (self.object_qpos[1] < self.moving_point[1] + self.box_radius)).astype(np.float32))
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01) &\
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) &\
             (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
                 (self.object_qpos[0] < self.goal[0] +self.moving_radius) &\
                     (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
@@ -434,11 +445,11 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
                         
             self.success += 1
             #-----------------------------------------
-            self.old_success += 1
+            #self.old_success += 1
             #-----------------------------------------
             print(self.success)
             
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01)).astype(np.float32).any()):
+        if ((self.object_qpos[2] < self.goal[2] + 0.05).astype(np.float32).any()):
             self.x_list.append(self.object_qpos[0])
             self.y_list.append(self.object_qpos[1])
         
@@ -456,8 +467,10 @@ class FetchReachAndThrowFixCgbrZeroEnv(fetch_env.FetchEnv, ut.EzPickle):
         return ((self.object_qpos[2] < self.goal[2] + 0.05) &\
             #(self.object_qpos[2] > self.goal[2] - 0.01) &\
             (self.object_qpos[0] > self.goal[0] - self.moving_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.moving_radius) &\
+                (self.object_qpos[0] < self.goal[0] +self.moving_radius) &\
                     (self.object_qpos[1] > self.goal[1] - self.moving_radius) &\
                         (self.object_qpos[1] < self.goal[1] + self.moving_radius)).astype(np.float32)
+
+
         #change cgbr----------------------------------------------------------------------------------
         

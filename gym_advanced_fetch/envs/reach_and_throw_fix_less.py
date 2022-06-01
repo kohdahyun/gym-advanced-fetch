@@ -1,27 +1,32 @@
 import os
 from math import pi
 import csv
+import datetime
+
 import numpy as np
 from gym import utils as ut
 from gym.envs.robotics import fetch_env
-
 from gym.envs.robotics import rotations, utils
 
 
 MODEL_XML_PATH = os.path.join("fetch", "reach_and_throw_fix.xml")
 MODEL_XML_PATH = os.path.join(os.path.dirname(__file__), "assets", MODEL_XML_PATH)
 
-save_list_path = "./lists/total/small_cgbr/tqc_less/"
+save_list_path = "./lists/path_sac/path_fourth/" + str(datetime.datetime.now()) + "/"
+
+def check_if_directory_exists():
+    if not os.path.exists(save_list_path):
+        os.makedirs(save_list_path)
 
 class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
     def __init__(self, reward_type="sparse"):
         self.success = 0
         #------------------------------------------------------
-        self.old_success = 0
-        self.trial_success = 0
+        #self.old_success = 0
+        #self.trial_success = 0
         self.trial = 0
         self.num_trial = 0
-        self.save_list = []
+        #self.save_list = []
         self.change_list = 0
         self.x_list = []
         self.y_list = []
@@ -157,27 +162,28 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.trial += 1
         #print("trial", self.trial)
         
-        if (self.old_success != 0):
-            self.trial_success += 1
+        #if (self.old_success != 0):
+            #self.trial_success += 1
             #print("trial_success", self.trial_success)
             
-        if (self.trial > 14):
+        #if (self.trial > 3):
             #save success rate
-            self.save_list.append(self.trial_success/self.trial)
-            self.num_trial += 1
+            #self.save_list.append(self.trial_success/self.trial)
+            #self.num_trial += 1
             #print("num_trial", self.num_trial)
         
-            self.trial = 0
-            self.trial_success = 0
+            #self.trial = 0
+            #self.trial_success = 0
             
         #--------------------------------------------------
             
-        if ((self.num_trial > 4) and (self.change_list == 0)):
-            with open(save_list_path + 'List_path_fix_1.csv','w') as file:
+        if ((self.trial > 3 * 4 * 2.5 - 1) and (self.change_list == 0)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_1.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 1
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 1
                 
             with open(save_list_path + 'List_path_fix_1_pos_x.csv','w') as file_x:
                 
@@ -189,12 +195,13 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.num_trial > 9) and (self.change_list == 1)):
-            with open(save_list_path + 'List_path_fix_2.csv','w') as file:
+        if ((self.trial > 3 * 8 * 2.5 - 1) and (self.change_list == 1)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_2.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 2
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 2
                 
             with open(save_list_path + 'List_path_fix_2_pos_x.csv','w') as file_x:
                 
@@ -206,12 +213,13 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.num_trial > 14) and (self.change_list == 2)):
-            with open(save_list_path + 'List_path_fix_3.csv','w') as file:
+        if ((self.trial > 3 * 12 * 2.5 - 1) and (self.change_list == 2)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_3.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 3
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 3
                 
             with open(save_list_path + 'List_path_fix_3_pos_x.csv','w') as file_x:
                 
@@ -223,12 +231,13 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.num_trial > 19) and (self.change_list == 3)):
-            with open(save_list_path + 'List_path_fix_4.csv','w') as file:
+        if ((self.trial > 3 * 16 * 2.5 - 1) and (self.change_list == 3)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_4.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 4
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 4
                 
             with open(save_list_path + 'List_path_fix_4_pos_x.csv','w') as file_x:
                 
@@ -240,12 +249,13 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.num_trial > 24) and (self.change_list == 4)):
-            with open(save_list_path + 'List_path_fix_5.csv','w') as file:
+        if ((self.trial > 3 * 20 * 2.5 - 1) and (self.change_list == 4)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_5.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 5
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 5
                 #self.num_trial = 0
                 
             with open(save_list_path + 'List_path_fix_5_pos_x.csv','w') as file_x:
@@ -258,12 +268,13 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)   
                 
-        if ((self.num_trial > 29) and (self.change_list == 5)):
-            with open(save_list_path + 'List_path_fix_6.csv','w') as file:
+        if ((self.trial > 3 * 24 * 2.5 - 1) and (self.change_list == 5)):
+            check_if_directory_exists()
+            # with open(save_list_path + 'List_path_fix_6.csv','w') as file:
                 
-                write = csv.writer(file)
-                write.writerow(self.save_list)
-                self.change_list = 6
+            #     write = csv.writer(file)
+            #     write.writerow(self.save_list)
+            self.change_list = 6
                 
             with open(save_list_path + 'List_path_fix_6_pos_x.csv','w') as file_x:
                 
@@ -275,7 +286,7 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                 write_y = csv.writer(file_y)
                 write_y.writerow(self.y_list)           
         
-        self.old_success = 0
+        #self.old_success = 0
         #----------------------------------------------------------
             
         self.sim.data.set_joint_qpos("object0:joint", self.object_qpos)
@@ -292,7 +303,7 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         # box center: 2.2 0.75018422 0.01
         
-        self.goal[0] = np.array(2.4)
+        self.goal[0] = np.array(2.2)
         self.goal[1] = np.array(0.74910048)
         self.goal[2] = np.array(0.23)
         
@@ -307,21 +318,85 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
         self.del_x = np.array((self.goal[0] - self.moving_point[0])/5)
         self.del_y = np.array((self.goal[1] - self.moving_point[1])/5)
         
-        if (self.num_trial > 24):
+        if (self.trial > 15 * 4 * 2.5 - 1):
             self.moving_point[0] += 5*self.del_x
             self.moving_point[1] += 5*self.del_y
-        elif (self.num_trial > 19):
+
+        elif (self.trial > 3 * 19 * 2.5 - 1):
+            self.moving_point[0] += 4.75*self.del_x
+            self.moving_point[1] += 4.75*self.del_y
+
+        elif (self.trial > 3 * 18 * 2.5 - 1):
+            self.moving_point[0] += 4.5*self.del_x
+            self.moving_point[1] += 4.5*self.del_y
+
+        elif (self.trial > 3 * 17 * 2.5 - 1):
+            self.moving_point[0] += 4.25*self.del_x
+            self.moving_point[1] += 4.25*self.del_y
+
+        elif (self.trial > 3 * 16 * 2.5 - 1):
             self.moving_point[0] += 4*self.del_x
             self.moving_point[1] += 4*self.del_y
-        elif (self.num_trial > 14):
-            self.moving_point[0] += 3*self.del_x
-            self.moving_point[1] += 3*self.del_y
-        elif (self.num_trial > 9):
-            self.moving_point[0] += 2*self.del_x
-            self.moving_point[1] += 2*self.del_y
-        elif (self.num_trial > 4):
-            self.moving_point[0] += self.del_x
-            self.moving_point[1] += self.del_y
+
+        elif (self.trial > 3 * 15 * 2.5 - 1):
+            self.moving_point[0] += 3.75*self.del_x
+            self.moving_point[1] += 3.75*self.del_y
+
+        elif (self.trial > 3 * 14 * 2.5 - 1):
+            self.moving_point[0] += 3.5*self.del_x
+            self.moving_point[1] += 3.5*self.del_y
+
+        elif (self.trial > 3 * 13 * 2.5 - 1):
+            self.moving_point[0] += 3.25*self.del_x
+            self.moving_point[1] += 3.25*self.del_y
+
+        elif (self.trial > 3 * 12 * 2.5 - 1):
+            self.moving_point[0] += 3.0*self.del_x
+            self.moving_point[1] += 3.0*self.del_y
+
+        elif (self.trial > 3 * 11 * 2.5 - 1):
+            self.moving_point[0] += 2.75*self.del_x
+            self.moving_point[1] += 2.75*self.del_y
+
+        elif (self.trial > 3 * 10 * 2.5 - 1):
+            self.moving_point[0] += 2.5*self.del_x
+            self.moving_point[1] += 2.5*self.del_y
+
+        elif (self.trial > 3 * 9 * 2.5 - 1):
+            self.moving_point[0] += 2.25*self.del_x
+            self.moving_point[1] += 2.25*self.del_y
+
+        elif (self.trial > 3 * 8 * 2.5 - 1):
+            self.moving_point[0] += 2.0*self.del_x
+            self.moving_point[1] += 2.0*self.del_y
+
+        elif (self.trial > 3 * 7 * 2.5 - 1):
+            self.moving_point[0] += 1.75*self.del_x
+            self.moving_point[1] += 1.75*self.del_y
+
+        elif (self.trial > 3 * 6 * 2.5 - 1):
+            self.moving_point[0] += 1.5*self.del_x
+            self.moving_point[1] += 1.5*self.del_y
+
+        elif (self.trial > 3 * 5 * 2.5 - 1):
+            self.moving_point[0] += 1.25*self.del_x
+            self.moving_point[1] += 1.25*self.del_y
+
+        elif (self.trial > 3 * 4 * 2.5 - 1):
+            self.moving_point[0] += 1.0*self.del_x
+            self.moving_point[1] += 1.0*self.del_y
+
+        elif (self.trial > 3 * 3 * 2.5 - 1):
+            self.moving_point[0] += 0.75*self.del_x
+            self.moving_point[1] += 0.75*self.del_y
+
+        elif (self.trial > 3 * 2 * 2.5 - 1):
+            self.moving_point[0] += 0.5*self.del_x
+            self.moving_point[1] += 0.5*self.del_y
+
+        elif (self.trial > 3 * 1 * 2.5 - 1):
+            self.moving_point[0] += 0.25*self.del_x
+            self.moving_point[1] += 0.25*self.del_y
                 
         #----------------------------------------------------------------------------------------------
          
@@ -354,7 +429,7 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
             return -((self.object_qpos[2] > self.goal[2] + 0.05) |\
                 #(self.object_qpos[2] < self.goal[2] - 0.01) |\
                 (self.object_qpos[0] < self.moving_point[0] - self.box_radius) |\
-                    (self.object_qpos[0] > self.goal[0] + self.box_radius) |\
+                    (self.object_qpos[0] > self.goal[0] + self.box_radius + self.goal[0] - self.moving_point[0]) |\
                         (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) |\
                             (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) |\
                                 (self.object_qpos[1] < self.goal[1] - self.box_radius) |\
@@ -379,9 +454,9 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
         
         #if (self.object_qpos[0] > 1.6).astype(np.float32):
 
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01) &\
+        if (((self.object_qpos[2] < self.goal[2] + 0.05) &\
             (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.box_radius + self.goal[0] - self.moving_point[0]) &\
                     (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
                         (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
                             (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
@@ -399,11 +474,11 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
                         
             self.success += 1
             #-----------------------------------------
-            self.old_success += 1
+            #self.old_success += 1
             #-----------------------------------------
             print(self.success)
             
-        if (((self.object_qpos[2] < self.goal[2] + 0.05) & (self.object_qpos[2] > self.goal[2] - 0.01)).astype(np.float32).any()):
+        if ((self.object_qpos[2] < self.goal[2] + 0.05).astype(np.float32).any()):
             self.x_list.append(self.object_qpos[0])
             self.y_list.append(self.object_qpos[1])
         
@@ -412,7 +487,7 @@ class FetchReachAndThrowFixLessEnv(fetch_env.FetchEnv, ut.EzPickle):
         return ((self.object_qpos[2] < self.goal[2] + 0.05) &\
             #(self.object_qpos[2] > self.goal[2] - 0.01) &\
             (self.object_qpos[0] > self.moving_point[0] - self.box_radius) &\
-                (self.object_qpos[0] < self.goal[0] + self.box_radius) &\
+                (self.object_qpos[0] < self.goal[0] + self.box_radius + self.goal[0] - self.moving_point[0]) &\
                     (self.object_qpos[1] > self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] - self.box_radius) &\
                         (self.object_qpos[1] < self.slope*(self.object_qpos[0]-self.goal[0]) + self.goal[1] + self.box_radius) &\
                             (self.object_qpos[1] > self.goal[1] - self.box_radius) &\
